@@ -420,7 +420,24 @@ def add_child():
 
     return redirect(url_for("children"))
 
-
+@app.post("/parents/add")
+@login_required
+@roles("admin")
+def add_parent():
+    conn = db()
+    conn.execute(
+        "INSERT INTO users(name,email,password,role) VALUES(?,?,?,?)",
+        (
+            request.form["name"],
+            request.form["email"].strip().lower(),
+            generate_password_hash(request.form["password"]),
+            "parent"
+        )
+    )
+    conn.commit()
+    conn.close()
+    flash("تمت إضافة ولي الأمر بنجاح.", "success")
+    return redirect(url_for("children"))
 @app.post("/children/delete/<int:child_id>")
 @login_required
 @roles("admin")
