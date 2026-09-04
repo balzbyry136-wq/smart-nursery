@@ -1,0 +1,9 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}نظام الحضانة الذكي{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head><body>
+<div class="layout"><aside class="side"><div class="brand">🧸 نظام الحضانة الذكي<small>{{ 'لوحة الإدارة' if role=='admin' else ('لوحة المعلمة' if role=='teacher' else 'بوابة ولي الأمر') }}</small></div><nav class="nav">
+{% if role in ['admin','teacher'] %}<a href="{{url_for('dashboard')}}">🏠 لوحة التحكم</a><a href="{{url_for('children')}}">👧 الأطفال</a><a href="{{url_for('attendance')}}">🕘 الحضور والانصراف</a>{% endif %}
+{% if role=='admin' %}<a href="{{url_for('payments')}}">💳 الرسوم والمدفوعات</a><a href="{{url_for('reports')}}">📊 التقارير</a><a href="{{url_for('settings')}}">⚙️ الإعدادات</a>{% endif %}
+{% if role=='parent' %}<a href="{{url_for('parent_portal')}}">🏠 بوابة ولي الأمر</a>{% endif %}
+</nav><a class="logout" href="{{url_for('logout')}}">↪ تسجيل الخروج</a></aside>
+<main class="main"><header class="top"><div><h1>{% block heading %}نظام الحضانة الذكي{% endblock %}</h1><p>إدارة أذكى • رعاية أفضل • تواصل أسهل</p></div><div class="user">👤 {{current_user}}</div></header>
+{% with messages=get_flashed_messages(with_categories=true) %}{% for cat,msg in messages %}<div class="flash {{cat}}">{{msg}}</div>{% endfor %}{% endwith %}
+{% block content %}{% endblock %}</main></div></body></html>
